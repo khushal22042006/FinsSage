@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FinSage Dashboard</title>
+  <link rel="icon" type="image/png" href="/images/logo.png.png">
+
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/media.css">
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <!-- Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+
+<body id="body" data-theme="light">
+  <div class="d-flex">
+
+    <!-- Main Content -->
+    <div class="flex-grow-1 p-4">
+      <!-- Top Bar -->
+      <div class="Logo-Strip d-flex flex-wrap justify-content-between align-items-center mb-4 position-relative">
+        <h6>FinSage</h6>
+        <span class="greeting">Good morning, <%= user.name %> 👋</span>
+        <div class="d-flex align-items-center gap-3">
+
+
+                <form id="monthForm" method="GET" action="" class="d-flex align-items-center gap-2">
+                <input
+                    type="month"
+                    name="month"
+                    class="form-control form-control-sm"
+                    style="width: auto;"
+                    value="<%= selectedMonth %>"
+                    placeholder="mm - yyyy"
+                    id="monthInput"
+                />
+                <button type="submit" hidden></button>
+                </form>
+                    
+
+          <button class="btn btn-light btn-sm" aria-label="Toggle Theme" id="theme-toggle"><i class="bi bi-moon"></i></button>
+          <i class="bi bi-bell fs-5 position-relative">
+            <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
+          </i>
+          <div class="position-relative">
+            <i class="bi bi-person-circle fs-5" id="profile-icon" style="cursor: pointer;"></i>
+            <div class="profile-dropdown" id="profile-dropdown">
+              <a href="#">Profile</a>
+              <a href="#">Settings</a>
+              <a href="#">Logout</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Summary Cards -->
+      <div class="row g-4 mb-4">
+        <div class="col-md-6">
+          <div class="card card-income shadow-sm p-3">
+            <h6>Total Income</h6>
+            <h4>&#8377; <%= income || 0 %></h4>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card card-expense shadow-sm p-3">
+            <h6>Total Expenses</h6>
+            <h4>&#8377; <%= expense || 0 %></h4>
+          </div>
+        </div>
+      </div>
+
+            <!-- Recent Transactions -->
+      <div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Recent Transactions</h5>
+    <ul class="list-group">
+      <% transaction.forEach(txn => { %>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <div><strong><%= txn.title %></strong></div>
+                    <small class="text-muted"><%= txn.date.toDateString() %></small>
+                </div>
+                <span class="<%= txn.type === 'income' ? 'text-success' : 'text-danger' %>">
+                    ₹<%= txn.amount %>
+                </span>
+                </li>
+
+      <% }) %>
+    </ul>
+            <div class="text-end mt-2">
+            <a href="/transactions" class="btn btn-outline-primary btn-sm"  style="background-color: #1F4E79 ; color: #FFFFFF">See More</a>
+            </div>
+      </div>
+
+
+      <!-- Charts Section -->
+      <div class="row g-4 mb-4">
+        <div class="col-md-6">
+          <div class="card p-3 shadow-sm">
+            <h6>Spending Categories</h6>
+            <div class="chart-container">
+              <canvas id="pieChart"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card p-3 shadow-sm">
+            <h6>Income vs Expenses</h6>
+            <div class="chart-container">
+              <canvas id="barChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+<!-- Goal Tracker Section -->
+<div class="row g-4 mb-4">
+  <div class="col-md-6">
+    <div class="card shadow-sm p-3">
+      <h6>Savings Goal</h6>
+      <ul class="list-group">
+
+        <% if (goals && goals.length > 0) { %>
+          <% goals.forEach(goal => { 
+              const progress = Math.min(Math.round((goal.currentAmount / goal.targetAmount) * 100), 100);
+          %>
+            <li class="list-group-item align-items-center">
+              <p><strong><%= goal.goalName %></strong></p>
+              <p class="mb-1 text-muted small"><%= goal.description %></p>
+              <div class="progress mb-3" style="height: 20px;">
+                <div class="progress-bar bg-success" role="progressbar" style=" width: <%= progress %>% ;">
+                  <%= progress %>%
+                </div>
+              </div>
+              <div class="d-flex gap-2">
+                <button class="btn btn-info text-white" style="background-color: #1F4E79;">Details</button>
+                <button class="btn btn-outline-secondary">Remove</button>
+              </div>
+            </li>
+          <% }) %>
+        <% } else { %>
+          <li class="list-group-item text-muted">No goals set yet.</li>
+        <% } %>
+
+      </ul>
+    </div>
+  </div>
+</div>
+
+      <!-- Recurring Bills & Budget Calendar -->
+      <div class="row g-4 mb-4">
+        <div class="col-md-6">
+          <div class="card shadow-sm p-3">
+            <h6>Recurring Bills</h6>
+            <ul class="list-group">
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                Netflix <span class="text-danger">₹500</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                Phone Bill <span class="text-danger">₹299</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card shadow-sm p-3 text-center">
+            <h6>Budget Calendar</h6>
+            <i class="bi bi-calendar3 display-4 text-muted"></i>
+            <p class="text-muted">Coming Soon</p>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Bottom Navigation Bar -->
+      <div class="d-flex justify-content-around bg-white shadow-sm p-2 rounded position-sticky bottom-0 z-3">
+        <a href="#" class="text-decoration-none text-dark text-center"><i class="bi bi-house fs-5"></i><br><small>Home</small></a>
+         <a href="#" class="text-decoration-none text-dark text-center"><i class="bi bi-robot fs-5"></i><br><small>AIBot</small></a>
+        <a href="#" class="text-decoration-none text-dark text-center"><i class="bi bi-plus-circle fs-4"></i><br><small>Add</small></a>
+        <a href="#" class="text-decoration-none text-dark text-center"><i class="bi bi-graph-up fs-5"></i><br><small>Reports</small></a>
+        <a href="#" class="text-decoration-none text-dark text-center"><i class="bi bi-three-dots fs-5"></i><br><small>More</small></a>
+      </div>
+
+  
+
+
+    </div>
+  </div>
+
+  <!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  // Pie Chart
+  const pieCtx = document.getElementById('pieChart').getContext('2d');
+  new Chart(pieCtx, {
+    type: 'pie',
+    data: {
+      labels: ['Food', 'Bills', 'Transport', 'Others'],
+      datasets: [{
+        data: [12000, 15000, 5000, 17000],
+        backgroundColor: ['#4CAF50', '#FFA500', '#03A9F4', '#9C27B0']
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false
+    }
+  });
+
+  // Bar Chart
+  const barCtx = document.getElementById('barChart').getContext('2d');
+  new Chart(barCtx, {
+    type: 'bar',
+    data: {
+      labels: ['Jan', 'Feb', 'Mar', 'Apr'],
+      datasets: [
+        {
+          label: 'Income',
+          backgroundColor: '#4CAF50',
+          data: [70000, 72000, 73000, 75000]
+        },
+        {
+          label: 'Expenses',
+          backgroundColor: '#FF6B6B',
+          data: [48000, 50000, 51000, 49000]
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false
+    }
+  });
+
+  // Dark Mode Toggle
+  document.getElementById('theme-toggle').addEventListener('click', function () {
+    document.body.classList.toggle('dark-mode');
+  });
+
+  // Profile Dropdown
+  const profileIcon = document.getElementById('profile-icon');
+  const profileDropdown = document.getElementById('profile-dropdown');
+
+  profileIcon.addEventListener('click', () => {
+    profileDropdown.style.display = profileDropdown.style.display === 'block' ? 'none' : 'block';
+  });
+
+  window.addEventListener('click', function (e) {
+    if (!profileDropdown.contains(e.target) && e.target !== profileIcon) {
+      profileDropdown.style.display = 'none';
+    }
+  });
+
+  // Add Button Dropdown Menu
+  const toggleButton = document.getElementById("toggleAddMenu");
+  const addMenu = document.getElementById("addMenu");
+
+  toggleButton.addEventListener("click", () => {
+    addMenu.classList.toggle("d-none");
+  });
+
+  function openModal(type) {
+    addMenu.classList.add("d-none");
+    alert("This will open the '" + type + "' modal. You can add it next.");
+    // Future: Launch corresponding modal
+  }
+
+  window.addEventListener("click", function (e) {
+    if (!addMenu.contains(e.target) && e.target !== toggleButton && !toggleButton.contains(e.target)) {
+      addMenu.classList.add("d-none");
+    }
+  });
+  const monthInput = document.getElementById("monthInput");
+  const form = document.getElementById("monthForm");
+
+  monthInput.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") {
+      e.preventDefault(); // optional: avoid native form quirks
+      form.submit();
+    }
+  });
+</script>
+
+</body>
+
+</html>
