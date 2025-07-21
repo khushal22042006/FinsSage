@@ -1,13 +1,15 @@
 const mongoose = require("mongoose");
+const config = require("config");
+const dbgr = require("debug")("development:mongoose");
 
 
-mongoose
-.connect("mongodb://127.0.0.1:27017/FinSage")
-.then( ()  => {
-    console.log("connected");
-})
-.catch( (err) => {
-    console.log(err);
-})
+const connectDB = async () => {
+  try {
+    await mongoose.connect(`${config.get("MONGODB_URI")}/FinSage`);
+    dbgr("MongoDB connected");
+  } catch (err) {
+    console.error("MongoDB connection error:", err.message);
+  }
+};
 
-module.exports = mongoose.connect;
+module.exports = connectDB;

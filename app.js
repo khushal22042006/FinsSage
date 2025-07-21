@@ -5,6 +5,8 @@ const path = require('path');
 const db = require("./config/mongoose-connection");
 const dashboardRouter = require('./routes/dashboardRouter');
 
+db(); 
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
