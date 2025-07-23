@@ -7,7 +7,8 @@ const verifyToken = (req, res, next) => {
   const token = req.cookies.token;
 
   if (!token) {
-     return res.redirect("/user/login"); // redirect to login
+      req.flash("error_msg", "you have to login");
+     return res.redirect("/");
   }
 
   try {
@@ -16,7 +17,7 @@ const verifyToken = (req, res, next) => {
     next();
   } catch (err) {
     console.error("JWT Verification Error:", err);
-    return res.redirect("/user/login");
+    return res.redirect("/");
   }
 };
 

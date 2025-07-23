@@ -102,6 +102,7 @@ canvas {
 }
 
 @media (max-width: 768px) {
+  
   .greeting {
     display: none;
   }
@@ -117,5 +118,24 @@ canvas {
   .top-icons {
     display: flex;
   }
+.top-bar,
+.Logo-Strip {
+  padding: 1rem;
+  height: auto;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.Logo-Strip h6 {
+  font-size: 1.3rem;
+  margin-bottom: 0.25rem;
+}
+
+.Logo-Strip .greeting {
+  font-size: 0.95rem;
+  display: block !important;
+}
+
 }
 

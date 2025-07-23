@@ -10,9 +10,10 @@ exports.getDashboard = async (req, res) => {
   try {
     const user = await User.findOne({ userId }); // Make sure user exists
 
-    if (!user) {
-      return res.status(404).send("User not found");
-    }
+   if (!user) {
+  req.flash("error_msg", "User not found");
+  return res.redirect("/");
+}
 
     const goals = await Goal.find({ userId });
     const bills = await Bill.findOne({ userId });

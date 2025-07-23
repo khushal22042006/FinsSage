@@ -11,7 +11,8 @@ exports.registerUser = async (req, res) => {
     // Check if email already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(409).json({ error: "Email already registered" });
+       req.flash("error_msg", "Email already registered");
+      return res.redirect("/");
     }
 
     // Generate UUID and hash password
@@ -59,12 +60,17 @@ exports.loginUser = async (req, res) => {
   try {
     // Check if user exists
     const user = await User.findOne({ email });
-    if (!user) return res.status(404).json({ error: "User not found" });
+    if (!user) {
+      req.flash("error_msg", "User not found");
+     return res.redirect("/");
+    }
 
     // Validate password
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(401).json({ error: "Invalid credentials" });
-
+    if (!isMatch){
+       req.flash("error_msg", "Invalid credentials");
+     return res.redirect("/");
+    }
     // Generate token
     const token = jwt.sign(
       { userId: user.userId, email: user.email },
