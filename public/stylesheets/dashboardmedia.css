@@ -1,0 +1,121 @@
+/* Base styles for mobile first (up to 768px) */
+body {
+  font-size: 14px;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  padding: 0.5rem;
+}
+
+/* Make charts and cards full-width */
+.col-md-6,
+.col-md-4,
+.card {
+  width: 100% !important;
+  margin-bottom: 1rem;
+}
+
+/* Fix nav spacing */
+.bottom-nav {
+  position: sticky;
+  bottom: 0;
+  z-index: 1000;
+  background-color: var(--primary-color);
+  display: flex;
+  justify-content: space-around;
+  padding: 0.5rem 0;
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+}
+
+.bottom-nav i,
+.bottom-nav span {
+  font-size: 0.9rem;
+}
+
+/* Make top bar sticky */
+.top-bar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: var(--primary-color);
+  padding: 0.8rem 1rem;
+  color: var(--text-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Adjust pie and bar charts to fit */
+canvas {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Media query for tablets (min-width: 768px) */
+@media (min-width: 768px) {
+  
+  .container {
+    padding: 1rem;
+  }
+
+  .col-md-6 {
+    width: 48%;
+  }
+
+  .col-md-4 {
+    width: 30%;
+  }
+
+  .charts-section,
+  .goal-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: space-between;
+  }
+
+  .card {
+    margin-bottom: 1.5rem;
+  }
+
+  .bottom-nav {
+    padding: 1rem 2rem;
+  }
+}
+
+/* Optional for larger screens like tablets in landscape */
+@media (min-width: 992px) {
+  .top-bar {
+    padding: 1rem 2rem;
+  }
+
+  .bottom-nav span {
+    font-size: 1rem;
+  }
+
+  body {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .greeting {
+    display: none;
+  }
+
+  .top-bar {
+    justify-content: space-between;
+  }
+
+  .logo {
+    width: 120px;
+  }
+
+  .top-icons {
+    display: flex;
+  }
+}
+

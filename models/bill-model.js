@@ -3,9 +3,8 @@ const Schema = mongoose.Schema;
 
 const billReminderSchema = new Schema({
   userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
+    type: String,  
+    required: true
   },
   billName: {
     type: String,

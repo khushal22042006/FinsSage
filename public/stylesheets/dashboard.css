@@ -1,0 +1,114 @@
+:root {
+  --accent-color: #1F4E79;
+  --text-color: #FFFFFF;
+  --secondary-color: #B0BEC5;
+  --success-color: #2E8B57;
+}
+
+/* Base Styles */
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #F3F4F6;
+  margin: 0;
+  padding: 0;
+  color: var(--text-color);
+}
+
+/* Sidebar */
+.sidebar {
+  background-color: var(--accent-color);
+  color: var(--text-color);
+  min-height: 100vh;
+  width: 250px;
+}
+
+/* Logo Top Strip */
+.Logo-Strip {
+  position: sticky;
+  top: 0;
+  z-index: 100; /* keeps it on top of other elements */
+  background-color: var(--accent-color);
+  color: var(--text-color);
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+}
+/* Navigation Link */
+.nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Card Styles */
+.card-income {
+  background-color: #E8F5E9;
+  color: #388E3C;
+}
+
+.card-expense {
+  background-color: #FFEBEE;
+  color: #C62828;
+}
+
+/* Chart */
+.chart-container {
+  position: relative;
+  width: 100%;
+  height: 300px;
+}
+
+canvas {
+  max-width: 100%;
+}
+
+
+/* Dark Mode */
+.dark-mode {
+  background-color: #1e293b !important;
+  color: #e2e8f0 !important;
+}
+
+.dark-mode .card,
+.dark-mode .profile-dropdown {
+  background-color: #334155;
+  color: #e2e8f0;
+}
+
+.dark-mode .nav-link,
+.dark-mode .sidebar {
+  background-color: #0f172a;
+  color: #e2e8f0;
+}
+
+/* Profile Dropdown */
+.profile-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+  display: none;
+  min-width: 150px;
+  z-index: 99;
+}
+
+.profile-dropdown a {
+  display: block;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  color: #333;
+}
+
+.profile-dropdown a:hover {
+  background-color: #f8f9fa;
+}
+
+.dark-mode .profile-dropdown a {
+  color: #f1f5f9;
+}
+
+.dark-mode .profile-dropdown a:hover {
+  background-color: #475569;
+}
+

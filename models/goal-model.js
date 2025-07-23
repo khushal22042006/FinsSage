@@ -3,9 +3,8 @@ const Schema = mongoose.Schema;
 
 const goalSchema = new Schema({
   userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
+    type: String, 
+    required: true
   },
   goalName: {
     type: String,
