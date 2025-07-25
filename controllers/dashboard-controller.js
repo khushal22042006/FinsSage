@@ -38,6 +38,61 @@ exports.getDashboard = async (req, res) => {
       .sort({ date: -1 })
       .limit(3);
 
+      // Step 1: Generate last 4 months labels and summary
+const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const now = new Date();
+
+const barChartData = {
+  labels: [],
+  incomeData: [],
+  expenseData: []
+};
+
+for (let i = 3; i >= 0; i--) {
+  const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
+  const year = date.getFullYear();
+  const month = date.getMonth();
+
+  const start = new Date(year, month, 1);
+  const end = new Date(year, month + 1, 0, 23, 59, 59, 999);
+
+  const monthlyTransactions = await Transaction.find({
+    userId,
+    date: { $gte: start, $lte: end },
+  });
+
+  const income = monthlyTransactions
+    .filter((t) => t.type.toLowerCase() === "income")
+    .reduce((sum, t) => sum + t.amount, 0);
+
+  const expense = monthlyTransactions
+    .filter((t) => t.type.toLowerCase() === "expense")
+    .reduce((sum, t) => sum + t.amount, 0);
+
+  barChartData.labels.push(monthNames[month]);
+  barChartData.incomeData.push(income);
+  barChartData.expenseData.push(expense);
+}
+
+      // Calculate category totals for Expenses only
+const categoryTotals = {};
+
+transactions.forEach((t) => {
+  if (t.type.toLowerCase() === "expense") {
+    const category = t.category;
+    if (!categoryTotals[category]) {
+      categoryTotals[category] = 0;
+    }
+    categoryTotals[category] += t.amount;
+  }
+});
+
+// Prepare data for Chart.js pie chart
+const categoryChartData = {
+  labels: Object.keys(categoryTotals),
+  data: Object.values(categoryTotals),
+};
+
     const income = transactions
       .filter((t) => t.type.toLowerCase() === "income")
       .reduce((sum, t) => sum + t.amount, 0);
@@ -45,6 +100,8 @@ exports.getDashboard = async (req, res) => {
     const expense = transactions
       .filter((t) => t.type.toLowerCase() === "expense")
       .reduce((sum, t) => sum + t.amount, 0);
+
+
 
     res.render("dashboard.ejs", {
       user,
@@ -55,6 +112,8 @@ exports.getDashboard = async (req, res) => {
       selectedMonth,
       transactions,         
       transaction: recentTransactions, 
+      categoryChartData,
+       barChartData,
     });
   } catch (err) {
     console.error(err);

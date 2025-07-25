@@ -239,10 +239,18 @@
   new Chart(pieCtx, {
     type: 'pie',
     data: {
-      labels: ['Food', 'Bills', 'Travel', 'Shopping','Entertainment', 'Others'],
+      labels: <%- JSON.stringify(categoryChartData.labels) %>,
       datasets: [{
-        data: [12000, 15000, 5000, 17000],
-        backgroundColor: ['#4CAF50', '#FFA500', '#03A9F4', '#9C27B0']
+        data: <%- JSON.stringify(categoryChartData.data) %>,
+        backgroundColor: [
+          "#f87171", // red
+          "#60a5fa", // blue
+          "#34d399", // green
+          "#fbbf24", // yellow
+          "#c084fc", // purple
+          "#a8a29e", // gray
+          "#fb923c"  // orange
+        ]
       }]
     },
     options: {
@@ -256,17 +264,17 @@
   new Chart(barCtx, {
     type: 'bar',
     data: {
-      labels: ['Jan', 'Feb', 'Mar', 'Apr'],
+      labels: <%- JSON.stringify(barChartData.labels) %>,
       datasets: [
         {
           label: 'Income',
           backgroundColor: '#4CAF50',
-          data: [70000, 72000, 73000, 75000]
+          data: <%- JSON.stringify(barChartData.incomeData) %>
         },
         {
           label: 'Expenses',
           backgroundColor: '#FF6B6B',
-          data: [48000, 50000, 51000, 49000]
+          data:  <%- JSON.stringify(barChartData.expenseData) %>
         }
       ]
     },
