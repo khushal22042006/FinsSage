@@ -53,8 +53,8 @@ exports.getDashboard = async (req, res) => {
       income,
       expense,
       selectedMonth,
-      transactions,         // 🟢 full list of transactions
-      transaction: recentTransactions, // 🟢 recent 3
+      transactions,         
+      transaction: recentTransactions, 
     });
   } catch (err) {
     console.error(err);
