@@ -9,6 +9,9 @@ const userRouter = require("./routes/userRouter");
 const session = require("express-session");
 const flash = require("connect-flash");
 require("dotenv").config();
+const transactionRoutes = require('./routes/transactionRouter');
+const goalRouter = require('./routes/goalRouter');
+const billRouter =require("./routes/billRouter");
 
 
 db(); 
@@ -42,6 +45,10 @@ app.use((req, res, next) => {
 app.use("/" , IndexRoute);
 app.use("/:userId/dashboard", dashboardRouter);
 app.use("/user" ,userRouter);
+app.use('/:userId/transaction', transactionRoutes);
+app.use('/:userId/goal', goalRouter );
+app.use('/:userId/bill', billRouter );
+
 
 
 

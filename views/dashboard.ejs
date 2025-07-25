@@ -21,6 +21,20 @@
 
 <body id="body">
   <div class="d-flex">
+    
+    <!-- Flash Messages -->
+<% if (success_msg && success_msg.length > 0) { %>
+  <div class="flash-message-container">
+    <div class="flash-message success"><%= success_msg[0] %></div>
+  </div>
+<% } %>
+
+<% if (error_msg && error_msg.length > 0) { %>
+  <div class="flash-message-container">
+    <div class="flash-message error"><%= error_msg[0] %></div>
+  </div>
+<% } %>
+
 
     <!-- Main Content -->
     <div class="flex-grow-1 p-4">
@@ -86,10 +100,10 @@
     <h5 class="card-title">Recent Transactions</h5>
     <ul class="list-group">
       <% transaction.forEach(txn => { %>
-        <li class="list-group-item d-flex justify-content-between align-items-center">
+        <li class=" transaction-item list-group-item d-flex justify-content-between align-items-center ">
                 <div>
                     <div><strong><%= txn.title %></strong></div>
-                    <small class="text-muted"><%= txn.date.toDateString() %></small>
+                    <small ><%= txn.date.toDateString() %></small>
                 </div>
                 <span class="<%= txn.type === 'income' ? 'text-success' : 'text-danger' %>">
                     ₹<%= txn.amount %>
@@ -102,9 +116,10 @@
             <a href="/transactions" class="btn btn-outline-primary btn-sm"  style="background-color: #1F4E79 ; color: #FFFFFF">See More</a>
             </div>
       </div>
-
-
+      </div>
+      
       <!-- Charts Section -->
+      <div class="card">
       <div class="row g-4 mb-4">
         <div class="col-md-6">
           <div class="card p-3 shadow-sm">
@@ -137,11 +152,11 @@
           <% goals.forEach(goal => { 
               const progress = Math.min(Math.round((goal.currentAmount / goal.targetAmount) * 100), 100);
           %>
-            <li class="list-group-item align-items-center">
+            <li class=" goal-item list-group-item align-items-center">
               <p><strong><%= goal.goalName %></strong></p>
               <p class="mb-1 text-muted small"><%= goal.description %></p>
               <div class="progress mb-3" style="height: 20px;">
-                <div class="progress-bar bg-success" role="progressbar" style=" width: <%= progress %>% ;">
+     <div class="progress-bar bg-success" role="progressbar" style="width: <%= progress %>% ">
                   <%= progress %>%
                 </div>
               </div>
@@ -166,12 +181,15 @@
           <div class="card shadow-sm p-3">
             <h6>Recurring Bills</h6>
             <ul class="list-group">
-              <li class="list-group-item d-flex justify-content-between align-items-center">
-                Netflix <span class="text-danger">₹500</span>
-              </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center">
-                Phone Bill <span class="text-danger">₹299</span>
-              </li>
+             <% if (bills && bills.length > 0) { %>
+                        <% bills.forEach(bill => { %>
+
+              <li class="  list-group-item d-flex justify-content-between align-items-center goal-item ">
+                <%= bill.billName %> <span class="text-danger">₹<%= bill.amount %></span>
+              <% }) %>
+        <% } else { %>
+          <li class="list-group-item text-muted">No bills set yet.</li>
+        <% } %>
             </ul>
           </div>
         </div>
@@ -188,11 +206,9 @@
       <!-- Bottom Navigation Bar -->
       <div class="  bottom-nav d-flex justify-content-around  shadow-sm p-2 rounded position-sticky bottom-0 z-3" >
 
-        <a href="#" class="text-decoration-none text-dark text-center"><i class="bi bi-house fs-5"></i><br><small>Home</small></a>
-         <a href="#" class="text-decoration-none text-dark text-center"><i class="bi bi-robot fs-5"></i><br><small>AIBot</small></a>
-        <a href="#" class="text-decoration-none text-dark text-center"><i class="bi bi-plus-circle fs-4"></i><br><small>Add</small></a>
-        <a href="#" class="text-decoration-none text-dark text-center"><i class="bi bi-graph-up fs-5"></i><br><small>Reports</small></a>
-        <a href="#" class="text-decoration-none text-dark text-center"><i class="bi bi-three-dots fs-5"></i><br><small>More</small></a>
+        <a href="#" class="text-decoration-none  text-center"><i class="bi bi-house fs-5"></i><br><small>Home</small></a>
+        <a href="#" id="openAddModal" class="text-decoration-none text-center"><i class="bi bi-plus-circle fs-4"></i><br><small>Add</small></a>
+         <a href="#" class="text-decoration-none  text-center"><i class="bi bi-robot fs-5"></i><br><small>AIBot</small></a>
       </div>
 
   
@@ -200,6 +216,20 @@
 
     
   </div>
+
+  <!-- Add Modal -->
+<div id="addModal" class="modal-overlay d-none">
+  <div class="modal-box card shadow-lg">
+    <h5 class="mb-4 text-center">What would you like to add?</h5>
+    <div class="d-flex flex-column gap-3">
+      <a href="/<%=user.userId%>/transaction" class="btn btn-primary"> Add Transaction</a>
+      <a href="/<%=user.userId%>/goal" class="btn btn-success"> Add Goal</a>
+      <a href="/<%=user.userId%>/bill" class="btn btn-warning text-white"> Add Bill Reminder</a>
+    </div>
+    <button class="btn btn-secondary mt-4 w-100" id="closeAddModal">Cancel</button>
+  </div>
+</div>
+
 
 <!--  Chart.js CDN-->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -209,7 +239,7 @@
   new Chart(pieCtx, {
     type: 'pie',
     data: {
-      labels: ['Food', 'Bills', 'Transport', 'Others'],
+      labels: ['Food', 'Bills', 'Travel', 'Shopping','Entertainment', 'Others'],
       datasets: [{
         data: [12000, 15000, 5000, 17000],
         backgroundColor: ['#4CAF50', '#FFA500', '#03A9F4', '#9C27B0']
@@ -286,25 +316,6 @@
     }
   });
 
-  // Add Button Dropdown Menu
-  const toggleButton = document.getElementById("toggleAddMenu");
-  const addMenu = document.getElementById("addMenu");
-
-  toggleButton.addEventListener("click", () => {
-    addMenu.classList.toggle("d-none");
-  });
-
-  function openModal(type) {
-    addMenu.classList.add("d-none");
-    alert("This will open the '" + type + "' modal. You can add it next.");
-    // Future: Launch corresponding modal
-  }
-
-  window.addEventListener("click", function (e) {
-    if (!addMenu.contains(e.target) && e.target !== toggleButton && !toggleButton.contains(e.target)) {
-      addMenu.classList.add("d-none");
-    }
-  });
   const monthInput = document.getElementById("monthInput");
   const form = document.getElementById("monthForm");
 
@@ -314,6 +325,27 @@
       form.submit();
     }
   });
+
+  // Modal open/close
+const openAddModal = document.getElementById("openAddModal");
+const addModal = document.getElementById("addModal");
+const closeAddModal = document.getElementById("closeAddModal");
+
+openAddModal.addEventListener("click", (e) => {
+  e.preventDefault();
+  addModal.classList.remove("d-none");
+});
+
+closeAddModal.addEventListener("click", () => {
+  addModal.classList.add("d-none");
+});
+
+window.addEventListener("click", (e) => {
+  if (e.target === addModal) {
+    addModal.classList.add("d-none");
+  }
+});
+
 </script>
 
 </body>

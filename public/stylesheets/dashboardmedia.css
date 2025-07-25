@@ -85,6 +85,16 @@ canvas {
     padding: 1rem 2rem;
   }
 }
+/* ✅ For dark mode list item background */
+.dark-mode .list-item, 
+.dark-mode .goal-item, 
+.dark-mode .transaction-item, 
+.dark-mode .card {
+  background-color: #1e293b !important;
+  color: #f1f5f9;
+  border-color: #334155;
+}
+
 
 /* Optional for larger screens like tablets in landscape */
 @media (min-width: 992px) {
