@@ -9,7 +9,7 @@ router.post('/add', verify, txController.submitTransaction);
 router.get('/all', verify, txController.getAlltransaction);
 router.get('/:transactionId/edit', verify, txController.getEditTransaction);
 router.put('/:transactionId/edit', verify, txController.updateTransaction);
-
+router.delete('/:transactionId/', verify, txController.deleteTransaction);
 
 
 module.exports = router;

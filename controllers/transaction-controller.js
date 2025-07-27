@@ -114,3 +114,25 @@ exports.updateTransaction = async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 };
+
+exports.deleteTransaction = async (req, res) => {
+    const { userId, transactionId } = req.params;
+
+    try{
+ const transaction = await Transaction.findOneAndDelete({
+      _id: transactionId,
+      userId: userId
+    });
+
+      if (!transaction) {
+      return res.status(404).send("Transaction not found or unauthorized");
+    }
+
+    res.redirect(`/${userId}/transaction/all`);
+
+    }catch(error){
+      console.error("Error deleting transaction:", error);
+    res.status(500).send("Internal Server Error");
+    }
+
+};
