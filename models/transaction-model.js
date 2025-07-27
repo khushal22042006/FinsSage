@@ -8,7 +8,7 @@ const transactionSchema = new Schema({
   },
   type: {
     type: String,
-    enum: ["Income", "Expense" , "Saving"],
+    enum: ["Income", "Expense" , "Savings"],
     required: true,
   },
   amount: {
@@ -17,7 +17,7 @@ const transactionSchema = new Schema({
   },
   category: {
     type: String,
-    enum: ['Food', 'Bills', 'Travel', 'Shopping','Entertainment', 'Others' , 'Saving'],
+    // enum: ["Food" , "Bills" , "travel", "shopping" , "Entertaiment" , "Others" , "Savings"],
     required: true,
   },
   note: String,

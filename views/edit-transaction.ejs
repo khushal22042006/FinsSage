@@ -139,60 +139,57 @@
 <body id="body" class="min-h-screen ">
   <div class="container my-5 max-w-xl mx-auto p-4 bg-white rounded-2xl shadow-md">
     <div class="text-center mb-4">
-      <h2 class="text-2xl font-semibold text-[#FFFFFF] bg-[#1F4E79] section-title rounded-t-2xl">Add New Transaction</h2>
+      <h2 class="text-2xl font-semibold text-[#FFFFFF] bg-[#1F4E79] section-title rounded-t-2xl">Edit Transaction</h2>
     </div>
 
     
 
 
-    <form action="/<%=userId%>/transaction/add" method="POST" class="space-y-4">
-      <div>
-        <label for="amount" class="form-label">Amount</label>
-        <input type="number" name="amount" id="amount" class="form-control" placeholder="Add amount" inputmode="decimal" step="0.01" required>
-      </div>
+<form action="/<%= userId %>/transaction/<%= transaction._id %>/edit?_method=PUT" method="POST"   class="space-y-4">
+  <div>
+    <label for="amount" class="form-label">Amount</label>
+    <input type="number" name="amount" id="amount" class="form-control"
+           value="<%= transaction.amount %>" inputmode="decimal" step="0.01" required>
+  </div>
 
-      <div>
-        <label for="type" class="form-label">Type</label>
-        <select name="type" id="type" class="form-select" required>
-          <option value="Income">Income</option>
-          <option value="Expense">Expense</option>
-          <option value="Savings">Savings</option>
-        </select>
-      </div>
+  <div>
+    <label for="type" class="form-label">Type</label>
+    <select name="type" id="type" class="form-select" required>
+      <option value="Income" <%= transaction.type === 'Income' ? 'selected' : '' %>>Income</option>
+      <option value="Expense" <%= transaction.type === 'Expense' ? 'selected' : '' %>>Expense</option>
+      <option value="Savings" <%= transaction.type === 'Savings' ? 'selected' : '' %>>Savings</option>
+    </select>
+  </div>
 
-      <div>
-        <label for="category" class="form-label">Category</label>
-        <!-- <select name="category" id="category" class="form-select" required>
-          <option value="Food">Food</option>
-          <option value="Travel">Travel</option>
-          <option value="Shopping">Shopping</option>
-          <option value="Bills">Bills</option>
-          <option value="Entertainment">Entertainment</option>
-           <option value="Savings">Savings</option>
-          <option value="Others">Others</option>
-        </select> -->
-        <input   name="category" id="category" class=" form-control" required>
-      </div>
+  <div>
+    <label for="category" class="form-label">Category</label>
+    <input name="category" id="category" class="form-control"
+           value="<%= transaction.category %>" required>
+  </div>
 
-      <div>
-        <label for="date" class="form-label">Date</label>
-        <input type="date" name="date" id="date" class="form-control" required>
-      </div>
+  <div>
+    <label for="date" class="form-label">Date</label>
+    <input type="date" name="date" id="date" class="form-control"
+           value="<%= transaction.date.toISOString().split('T')[0] %>" required>
+  </div>
 
-      <div>
-        <label for="note" class="form-label">Note</label>
-        <textarea name="note" id="note" rows="3" class="form-control" placeholder="Optional"></textarea>
-      </div>
+  <div>
+    <label for="note" class="form-label">Note</label>
+    <textarea name="note" id="note" rows="3" class="form-control"
+              placeholder="Optional"><%= transaction.note %></textarea>
+  </div>
 
-      <div class="form-check">
-        <input type="checkbox" name="recurring" value="true" class="form-check-input" id="recurring">
-        <label for="recurring" class="form-check-label">Is this a recurring transaction?</label>
-      </div>
+  <div class="form-check">
+    <input type="checkbox" name="recurring" value="true" class="form-check-input" id="recurring">
+    <label for="recurring" class="form-check-label">Is this a recurring transaction?</label>
+  </div>
 
-      <div class="text-center">
-        <button type="submit" class="btn btn-primary px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 text-white hover:from-blue-700 hover:to-blue-600 shadow-sm">Add Transaction</button>
-      </div>
-    </form>
+  <div class="text-center">
+    <button type="submit" class="btn btn-primary px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 text-white hover:from-blue-700 hover:to-blue-600 shadow-sm">
+      Edit Transaction
+    </button>
+  </div>
+</form>
 
     <div class="mt-4 text-center">
       <a href="/<%=userId%>/dashboard" class="inline-block px-4 py-2 text-white bg-gray-700 rounded-lg hover:bg-gray-800 text-sm">Back to Dashboard</a>

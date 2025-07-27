@@ -6,5 +6,10 @@ const verify = require('../middlewares/verifyToken');
 
 router.get('/', verify, txController.renderAddForm);
 router.post('/add', verify, txController.submitTransaction);
+router.get('/all', verify, txController.getAlltransaction);
+router.get('/:transactionId/edit', verify, txController.getEditTransaction);
+router.put('/:transactionId/edit', verify, txController.updateTransaction);
+
+
 
 module.exports = router;

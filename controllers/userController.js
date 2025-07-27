@@ -39,7 +39,7 @@ exports.registerUser = async (req, res) => {
     httpOnly: true,           // Cookie not accessible via client JS
     secure: false,            // true in production with HTTPS
     sameSite: "lax",          // CSRF protection
-    maxAge: 3 * 24 * 60 * 60 * 1000 // 3 days
+    maxAge: 1000 * 60 * 60 * 24 // 1 days
     });
 
 
@@ -75,7 +75,7 @@ exports.loginUser = async (req, res) => {
     const token = jwt.sign(
       { userId: user.userId, email: user.email },
       process.env.JWT_SECRET,
-      { expiresIn: "3d" }
+      { expiresIn: "1d" }
     );
 
     // Set cookie
@@ -83,7 +83,7 @@ exports.loginUser = async (req, res) => {
       httpOnly: true,
       secure: false, // set to true in production with HTTPS
       sameSite: "lax",
-      maxAge: 3 * 24 * 60 * 60 * 1000 // 3 days
+      maxAge:  1000 * 60 * 60 * 24 // 1 days
     });
  
     res.redirect(`/${user.userId}/dashboard`);

@@ -113,7 +113,7 @@
       <% }) %>
     </ul>
             <div class="text-end mt-2">
-            <a href="/transactions" class="btn btn-outline-primary btn-sm"  style="background-color: #1F4E79 ; color: #FFFFFF">See More</a>
+            <a href="/<%=user.userId%>/transaction/all" class="btn btn-outline-primary btn-sm"  style="background-color: #1F4E79 ; color: #FFFFFF">See More</a>
             </div>
       </div>
       </div>
@@ -206,7 +206,7 @@
       <!-- Bottom Navigation Bar -->
       <div class="  bottom-nav d-flex justify-content-around  shadow-sm p-2 rounded position-sticky bottom-0 z-3" >
 
-        <a href="#" class="text-decoration-none  text-center"><i class="bi bi-house fs-5"></i><br><small>Home</small></a>
+        <a href="/<%=user.userId%>/dashboard" class="text-decoration-none  text-center"><i class="bi bi-house fs-5"></i><br><small>Home</small></a>
         <a href="#" id="openAddModal" class="text-decoration-none text-center"><i class="bi bi-plus-circle fs-4"></i><br><small>Add</small></a>
          <a href="#" class="text-decoration-none  text-center"><i class="bi bi-robot fs-5"></i><br><small>AIBot</small></a>
       </div>

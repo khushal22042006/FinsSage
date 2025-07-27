@@ -12,6 +12,7 @@ require("dotenv").config();
 const transactionRoutes = require('./routes/transactionRouter');
 const goalRouter = require('./routes/goalRouter');
 const billRouter =require("./routes/billRouter");
+const methodOverride = require('method-override');
 
 
 db(); 
@@ -40,6 +41,8 @@ app.use((req, res, next) => {
   res.locals.error_msg = req.flash("error_msg");
   next();
 });
+
+app.use(methodOverride('_method'));
 
 // Routes
 app.use("/" , IndexRoute);

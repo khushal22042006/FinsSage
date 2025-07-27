@@ -78,7 +78,7 @@ for (let i = 3; i >= 0; i--) {
 const categoryTotals = {};
 
 transactions.forEach((t) => {
-  if (t.type.toLowerCase() === "expense") {
+  if (t.type.toLowerCase() === "expense" || t.type.toLowerCase() === "savings") {
     const category = t.category;
     if (!categoryTotals[category]) {
       categoryTotals[category] = 0;
