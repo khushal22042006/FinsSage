@@ -19,3 +19,4 @@ exports.submitGoal = async (req, res) => {
     res.redirect(`/${userId}/dashboard`);
   }
 };
+

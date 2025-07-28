@@ -16,7 +16,7 @@ exports.getDashboard = async (req, res) => {
 }
 
     const goals = await Goal.find({ userId });
-    const bills = await Bill.find({ userId });
+    const bills = await Bill.find({ userId, isPaid: false });
 
     const selectedMonth = Array.isArray(month)
       ? month[0]
