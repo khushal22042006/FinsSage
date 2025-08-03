@@ -101,6 +101,8 @@ const categoryChartData = {
       .filter((t) => t.type.toLowerCase() === "expense")
       .reduce((sum, t) => sum + t.amount, 0);
 
+      
+
 
 
     res.render("dashboard.ejs", {

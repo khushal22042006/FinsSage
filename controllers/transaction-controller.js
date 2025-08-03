@@ -1,19 +1,43 @@
 // controllers/transactionController.js
 const Transaction = require('../models/transaction-model');
 const User = require("../models/user-model");
+const Goal = require('../models/goal-model');
 
+exports.renderAddForm = async (req, res) => {
+  const userId = req.userId;
 
-exports.renderAddForm = (req, res) => {
-  res.render('add-transaction', { userId: req.userId });
+  const goals = await Goal.find({ userId, status: "In Progress" }); // Get in-progress goals
+
+  res.render('add-transaction', { userId, goals });
 };
 
 exports.submitTransaction = async (req, res) => {
   const userId = req.userId;
-  const { amount, type, category, date, note } = req.body;
+  const { amount, type, category, date, note , goalId} = req.body;
 
   try {
-    const tx = new Transaction({ userId, amount, type, category, date, note });
+    const tx = new Transaction({ userId, amount, type, category, date, note  , goalId});
     await tx.save();
+
+
+ // If it's a Savings transaction and a goal is selected
+    if (type === "Savings" && goalId) {
+      const goal = await Goal.findOne({ _id: goalId, userId });
+
+      if (goal) {
+        goal.currentAmount += parseFloat(amount);
+
+        goal.contributions.push({
+          amount: parseFloat(amount),
+          date: date || Date.now(),
+          note: note || '',
+          transactionId: tx._id.toString()
+        });
+
+        await goal.save();
+      }
+    }
+
     req.flash('success_msg', 'Transaction added successfully');
     res.redirect(`/${userId}/dashboard`);
   } catch (err) {

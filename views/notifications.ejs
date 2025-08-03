@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>All Transactions - FinSage</title>
+  <link rel="icon" href="/images/logo.png.png" type="image/png" />
+  <link rel="stylesheet" href="/stylesheets/dashboard.css" />
+  <link rel="stylesheet" href="/stylesheets/dashboardmedia.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+
+  <style>
+    :root {
+      --accent-color: #1F4E79;
+      --text-color: #252424;
+      --background-color: linear-gradient(90deg, #e2e2e2, #c9d6ff);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: var(--background-color);
+      color: var(--text-color);
+      background-attachment: fixed;
+      background-size: cover;
+    }
+
+
+
+
+
+    .dark-mode {
+      --background-color: linear-gradient(90deg, #313b4d, #1e293b);
+      --text-color: #e2e8f0;
+      background: var(--background-color) !important;
+      color: var(--text-color) !important;
+    }
+
+    .dark-mode .container {
+      background-color: #38485f !important;
+      color: var(--text-color);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .dark-mode .card,
+    .dark-mode .profile-dropdown {
+    background-color: #38485f;
+    color: #e2e8f0;
+    }
+
+
+    .dark-mode .transaction-card {
+      background-color: #475569;
+      color: #e2e8f0;
+    }
+
+    .dark-mode .transaction-card p,
+    .dark-mode .transaction-card h5,
+    .dark-mode .transaction-card strong {
+      color: #e2e8f0;
+    }
+
+    .dark-mode h2.section-title {
+      background-color: var(--accent-color) !important;
+      color: #fff !important;
+    }
+
+    .dark-mode .btn-outline-primary {
+      color: #fff;
+      border-color: #fff;
+    }
+
+    .dark-mode .btn-outline-primary:hover {
+      background-color: #1F4E79;
+      border-color: #1F4E79;
+    }
+
+    h2.section-title {
+      min-height: 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .transaction-card {
+      background-color: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      border-radius: 0.75rem;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .transaction-card:hover {
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-outline-primary {
+      border: 1px solid var(--accent-color);
+      color: var(--accent-color);
+      background: transparent;
+      transition: 0.3s ease;
+    }
+
+    .btn-outline-primary:hover {
+      background-color: var(--accent-color);
+      color: #fff;
+    }
+
+    .btn-warning {
+      background-color: #f59e0b !important;
+      border: none;
+    }
+
+    .btn-warning:hover {
+      background-color: #d97706 !important;
+    }
+
+
+    .fade-in {
+      animation: fadeIn 0.5s ease-in-out forwards;
+      opacity: 0;
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+
+
+    .dark-mode #deleteModal .modal-content {
+      background-color: #38485f;
+      color: #e2e8f0;
+    }
+
+    a.bg-gray-700 {
+      background-color: #334155 !important;
+      color: #fff;
+      font-size: 0.875rem;
+    }
+
+    a.bg-gray-700:hover {
+      background-color: #1e293b !important;
+    }
+
+  
+
+
+.bx:hover {
+  color: var(--accent-color);
+  transform: scale(1.2);
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.bx {
+  transition: all 0.3s ease-in-out;
+}
+
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(2px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+}
+
+.modal-box {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.dark-mode .modal-box {
+  background-color: #1e293b;
+  color: #f1f5f9;
+}
+
+.modal-overlay.d-none {
+  display: none;
+}
+
+/*  media.css */
+ /* Base styles for mobile first (up to 768px) */
+body {
+  font-size: 14px;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  padding: 0.5rem;
+}
+
+/* Make charts and cards full-width */
+.col-md-6,
+.col-md-4,
+.card {
+  width: 100% !important;
+  margin-bottom: 1rem;
+}
+
+/* Fix nav spacing */
+.bottom-nav {
+  position: sticky;
+  bottom: 0;
+  z-index: 1000;
+  background-color: var(--primary-color);
+  display: flex;
+  justify-content: space-around;
+  padding: 0.5rem 0;
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+}
+
+.bottom-nav i,
+.bottom-nav span {
+  font-size: 0.9rem;
+}
+
+/* Make top bar sticky */
+.top-bar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: var(--primary-color);
+  padding: 0.8rem 1rem;
+  color: var(--text-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+/* Media query for tablets (min-width: 768px) */
+@media (min-width: 768px) {
+  
+  .container {
+    padding: 1rem;
+  }
+
+  .col-md-6 {
+    width: 48%;
+  }
+
+  .col-md-4 {
+    width: 30%;
+  }
+
+  .charts-section,
+  .goal-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: space-between;
+  }
+
+  .card {
+    margin-bottom: 1.5rem;
+  }
+
+  .bottom-nav {
+    padding: 1rem 2rem;
+  }
+}
+/* ✅ For dark mode list item background */
+.dark-mode .list-item, 
+.dark-mode .goal-item, 
+.dark-mode .transaction-item, 
+.dark-mode .card {
+  background-color: #1e293b !important;
+  color: #f1f5f9;
+  border-color: #334155;
+}
+
+
+/* Optional for larger screens like tablets in landscape */
+@media (min-width: 992px) {
+  .top-bar {
+    padding: 1rem 2rem;
+  }
+
+  .bottom-nav span {
+    font-size: 1rem;
+  }
+
+  body {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  
+  .greeting {
+    display: none;
+  }
+
+  .top-bar {
+    justify-content: space-between;
+  }
+
+  .logo {
+    width: 120px;
+  }
+
+  .top-icons {
+    display: flex;
+  }
+.top-bar,
+.Logo-Strip {
+  padding: 1rem;
+  height: auto;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.Logo-Strip h6 {
+  font-size: 1.3rem;
+  margin-bottom: 0.25rem;
+}
+
+.Logo-Strip .greeting {
+  font-size: 0.95rem;
+  display: block !important;
+}
+
+}
+
+
+
+  </style>
+</head>
+
+<body id="body" class="min-h-screen ">
+
+         <!-- Notification Content -->
+  <div class="container my-5 max-w-2xl mx-auto p-4 bg-white rounded-2xl shadow-md">
+    <!-- Header with Back Button and Title -->
+<div class="bg-[#1f4d78] text-white rounded-t-xl px-4 py-3 text-xl font-bold flex items-center justify-between">
+
+  <!-- Back Icon -->
+  <a href="/<%= userId %>/dashboard" class="text-white hover:text-yellow-300 flex items-center gap-1">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+      viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+    </svg>
+    <span class="hidden sm:inline">Back</span>
+  </a>
+
+  <!-- Title -->
+  <span class="text-center flex-grow -ml-6 sm:ml-0">🔔 Notifications</span>
+
+  <!-- Empty placeholder to keep title centered -->
+  <span class="w-6 sm:w-20"></span>
+</div>
+
+    <% if (notifications.length === 0) { %>
+      <div class="text-center py-10 text-gray-500 text-lg">No notifications available.</div>
+    <% } else { %>
+      <div class="divide-y divide-gray-300">
+        <% notifications.forEach(notification => { 
+          const dueDate = new Date(notification.billId?.dueDate);
+          const currentDate = new Date();
+          const daysLeft = ((dueDate - currentDate) / (1000 * 60 * 60 * 24)).toFixed(1);
+        %>
+          <div class="transaction-card fade-in">
+            <p class="text-lg font-semibold">
+              ➤ <%= notification.billId?.billName %> is 
+              <% if (daysLeft < 0) { %>
+                <span class="text-danger">overdue by <%= Math.abs(daysLeft) %> days</span>
+              <% } else { %>
+                due in <%= daysLeft %> days
+              <% } %>.
+            </p>
+            <p class="  text-sm">Related Bill: <%= notification.billId?.billName || 'N/A' %></p>
+            <p class=" text-xs text-end mt-2">
+              <%= new Date(notification.createdAt).toLocaleString() %>
+            </p>
+          </div>
+        <% }); %>
+      </div>
+    <% } %>
+
+
+
+
+  <script>
+    // Apply dark mode if saved
+
+      const themeToggle = document.getElementById('theme-toggle');
+  const body = document.body;
+
+      // Check localStorage for theme on page load
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme === 'dark') {
+    body.classList.add('dark-mode');
+    themeToggle.innerHTML = '<i class="bi bi-brightness-high"></i>'; // optional: change icon
+  } else {
+    themeToggle.innerHTML = '<i class="bi bi-moon"></i>';
+  }
+
+
+
+  window.addEventListener('click', function (e) {
+    if (!profileDropdown.contains(e.target) && e.target !== profileIcon) {
+      profileDropdown.style.display = 'none';
+    }
+  });
+
+
+
+
+
+
+
+
+
+  </script>
+</body>
+</html>

@@ -13,6 +13,10 @@ const transactionRoutes = require('./routes/transactionRouter');
 const goalRouter = require('./routes/goalRouter');
 const billRouter =require("./routes/billRouter");
 const methodOverride = require('method-override');
+const startScheduler = require("./cron/scheduler");
+const notificationRouter = require("./routes/notificationRouter");
+
+
 
 
 db(); 
@@ -51,9 +55,11 @@ app.use("/user" ,userRouter);
 app.use('/:userId/transaction', transactionRoutes);
 app.use('/:userId/goal', goalRouter );
 app.use('/:userId/bill', billRouter );
+app.use("/:userId/notifications", notificationRouter);
 
 
 
+startScheduler();
 
 
 

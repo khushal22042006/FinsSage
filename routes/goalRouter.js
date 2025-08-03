@@ -5,5 +5,7 @@ const verify = require('../middlewares/verifyToken');
 
 router.get('/', verify, goalController.renderAddForm);
 router.post('/add', verify, goalController.submitGoal);
+router.get('/:goalId/details', verify, goalController.getGoalDetails);
+
 
 module.exports = router;

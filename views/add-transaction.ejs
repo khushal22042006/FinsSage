@@ -133,6 +133,57 @@
   font-weight: 600;
 }
 
+/* ========== Goal Modal Styles ========== */
+.modal-content {
+  background-color: #ffffff;
+  color: #1f2937;
+  border-radius: 1rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease-in-out;
+}
+
+.modal-header,
+.modal-body {
+  padding: 1.25rem;
+}
+
+.goal-option {
+  background-color: #f1f5f9;
+  color: #1f2937;
+  border: none;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  transition: background-color 0.2s ease;
+}
+
+.goal-option:hover {
+  background-color: #e2e8f0;
+  cursor: pointer;
+}
+
+/* Close button white in dark mode */
+.dark-mode .btn-close {
+  filter: invert(1);
+}
+
+/* Dark mode modal */
+.dark-mode .modal-content {
+  background-color: #1e293b;
+  color: #e2e8f0;
+}
+
+.dark-mode .goal-option {
+  background-color: #334155;
+  color: #e2e8f0;
+}
+
+.dark-mode .goal-option:hover {
+  background-color: #475569;
+}
+
+
 
 
 </style>
@@ -188,6 +239,8 @@
         <input type="checkbox" name="recurring" value="true" class="form-check-input" id="recurring">
         <label for="recurring" class="form-check-label">Is this a recurring transaction?</label>
       </div>
+        
+        <input type="hidden" name="goalId" id="goalId" />
 
       <div class="text-center">
         <button type="submit" class="btn btn-primary px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 text-white hover:from-blue-700 hover:to-blue-600 shadow-sm">Add Transaction</button>
@@ -198,13 +251,64 @@
       <a href="/<%=userId%>/dashboard" class="inline-block px-4 py-2 text-white bg-gray-700 rounded-lg hover:bg-gray-800 text-sm">Back to Dashboard</a>
     </div>
   </div>
+        
+            <!-- Goal Selection Modal -->
+        <div class="modal fade" id="goalModal" tabindex="-1" aria-labelledby="goalModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content ">
+              <div class="modal-header">
+                <h5 class="modal-title" id="goalModalLabel">Select Goal for Savings</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <% if (goals.length > 0) { %>
+                  <div class="list-group">
+                    <% goals.forEach(goal => { %>
+                      <button type="button" class="list-group-item list-group-item-action goal-option"
+                        data-goal-id="<%= goal._id %>">
+                        <%= goal.goalName %> — ₹<%= goal.currentAmount %> / ₹<%= goal.targetAmount %>
+                      </button>
+                    <% }); %>
+                  </div>
+                <% } else { %>
+                  <p>No active goals found.</p>
+                <% } %>
+              </div>
+            </div>
+          </div>
+        </div>
 
+        <!-- Load Bootstrap JS bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script>
    
         const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'dark') {
       body.classList.add('dark-mode');
     }
+
+    const form = document.querySelector('form');
+  const typeSelect = document.getElementById('type');
+  const goalModal = new bootstrap.Modal(document.getElementById('goalModal'));
+  const goalIdInput = document.getElementById('goalId');
+
+  form.addEventListener('submit', function (e) {
+    if (typeSelect.value === 'Savings' && !goalIdInput.value) {
+      e.preventDefault(); // Prevent submission for now
+      goalModal.show();
+    }
+  });
+
+  // When a goal is selected
+  document.querySelectorAll('.goal-option').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const selectedGoalId = btn.getAttribute('data-goal-id');
+      goalIdInput.value = selectedGoalId;
+      goalModal.hide();
+      form.submit(); // Submit now
+    });
+  });
+
 
   </script>
 </body>

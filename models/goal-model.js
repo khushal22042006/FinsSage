@@ -27,6 +27,15 @@ const goalSchema = new Schema({
   default: "In Progress"
 },
   description: String,
+
+  contributions: [
+    {
+      amount: Number,
+      date: { type: Date, default: Date.now },
+      note: String,
+      transactionId: String
+    }
+  ]
 });
 
 const Goal = mongoose.model("Goal", goalSchema);
