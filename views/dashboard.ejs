@@ -47,7 +47,7 @@
         FinSage
       </h6>
 
-        <span class="greeting">Good morning, <%= user.name %> 👋</span>
+        <span class="greeting">Hello, <%= user.name %> 👋</span>
         <div class="d-flex align-items-center gap-3">
 
 
@@ -74,8 +74,8 @@
           <div class="position-relative">
             <i class="bi bi-person-circle fs-5" id="profile-icon" style="cursor: pointer;"></i>
             <div class="profile-dropdown" id="profile-dropdown">
-              <a href="#">Profile</a>
-              <a href="#">Settings</a>
+              <a href="/<%= user.userId %>/profile">Profile</a>
+              <!-- <a href="#">Settings</a> -->
               <a href="/user/logout">Logout</a>
             </div>
           </div>
@@ -208,7 +208,7 @@
 
         <a href="/<%=user.userId%>/dashboard" class="text-decoration-none  text-center"><i class="bi bi-house fs-5"></i><br><small>Home</small></a>
         <a href="#" id="openAddModal" class="text-decoration-none text-center"><i class="bi bi-plus-circle fs-4"></i><br><small>Add</small></a>
-         <a href="#" class="text-decoration-none  text-center"><i class="bi bi-robot fs-5"></i><br><small>AIBot</small></a>
+       <a href="#" class="text-decoration-none  text-center"><i class="bi bi-robot fs-5"></i><br><small>AIBot</small></a> 
       </div>
 
   

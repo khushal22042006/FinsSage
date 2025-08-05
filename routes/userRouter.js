@@ -25,6 +25,7 @@ router.post("/register", validate(registerSchema), registerUser);
 router.post("/login", validate(loginSchema), loginUser);
 
 
+
 router.get("/logout", (req, res) => {
   res.clearCookie("token"); // Clear the JWT cookie
   req.session.destroy(() => {
