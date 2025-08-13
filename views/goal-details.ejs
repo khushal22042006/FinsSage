@@ -7,480 +7,12 @@
   <link rel="icon" href="/images/logo.png.png" type="image/png" />
   <link rel="stylesheet" href="/stylesheets/dashboard.css" />
   <link rel="stylesheet" href="/stylesheets/dashboardmedia.css" />
+  <link rel="stylesheet" href="/stylesheets/goal-detail.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
 
-  <style>
-    :root {
-      --accent-color: #1F4E79;
-      --text-color: #252424;
-      --background-color: linear-gradient(90deg, #e2e2e2, #c9d6ff);
-    }
-
-    body {
-      font-family: 'Inter', sans-serif;
-      margin: 0;
-      padding: 0;
-      background: var(--background-color);
-      color: var(--text-color);
-      background-attachment: fixed;
-      background-size: cover;
-    }
-
-    /* Logo Top Strip (Enhanced) */
-.Logo-Strip {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background-color: var(--accent-color);
-  color: var(--text-color);
-  height: 5rem; /* Increased height */
-  padding: 0 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-}
-
-/* Logo Styling */
-.Logo-Strip h6 {
-  font-size: 1.75rem;
-  font-weight: 700;
-  letter-spacing: 1px;
-  margin: 0;
-}
-
-/* Greeting Text */
-.Logo-Strip .greeting {
-  font-size: 1rem;
-  font-weight: 500;
-}
-
-
-    .dark-mode {
-      --background-color: linear-gradient(90deg, #313b4d, #1e293b);
-      --text-color: #e2e8f0;
-      background: var(--background-color) !important;
-      color: var(--text-color) !important;
-    }
-
-    .dark-mode .container {
-      background-color: #38485f !important;
-      color: var(--text-color);
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    }
-
-    .dark-mode .card,
-    .dark-mode .profile-dropdown {
-    background-color: #38485f;
-    color: #e2e8f0;
-    }
-
-
-    .dark-mode .transaction-card {
-      background-color: #475569;
-      color: #e2e8f0;
-    }
-
-    .dark-mode .transaction-card p,
-    .dark-mode .transaction-card h5,
-    .dark-mode .transaction-card strong {
-      color: #e2e8f0;
-    }
-
-    .dark-mode h2.section-title {
-      background-color: var(--accent-color) !important;
-      color: #fff !important;
-    }
-
-    .dark-mode .btn-outline-primary {
-      color: #fff;
-      border-color: #fff;
-    }
-
-    .dark-mode .btn-outline-primary:hover {
-      background-color: #1F4E79;
-      border-color: #1F4E79;
-    }
-
-    h2.section-title {
-      min-height: 3rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .transaction-card {
-      background-color: #f1f5f9;
-      border: 1px solid #cbd5e1;
-      border-radius: 0.75rem;
-      padding: 1rem;
-      margin-bottom: 1rem;
-      transition: all 0.3s ease;
-    }
-
-    .transaction-card:hover {
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .btn-outline-primary {
-      border: 1px solid var(--accent-color);
-      color: var(--accent-color);
-      background: transparent;
-      transition: 0.3s ease;
-    }
-
-    .btn-outline-primary:hover {
-      background-color: var(--accent-color);
-      color: #fff;
-    }
-
-    .btn-warning {
-      background-color: #f59e0b !important;
-      border: none;
-    }
-
-    .btn-warning:hover {
-      background-color: #d97706 !important;
-    }
-
-    .btn-danger {
-      background-color: #dc2626 !important;
-      border: none;
-    }
-
-    .btn-danger:hover {
-      background-color: #b91c1c !important;
-    }
-
-    .fade-in {
-      animation: fadeIn 0.5s ease-in-out forwards;
-      opacity: 0;
-    }
-
-    @keyframes fadeIn {
-      to {
-        opacity: 1;
-      }
-    }
-
-    #deleteModal .modal-content {
-      background-color: #fff;
-      padding: 1.5rem;
-      border-radius: 1rem;
-      max-width: 22rem;
-      width: 100%;
-    }
-
-    .dark-mode #deleteModal .modal-content {
-      background-color: #38485f;
-      color: #e2e8f0;
-    }
-
-    a.bg-gray-700 {
-      background-color: #334155 !important;
-      color: #fff;
-      font-size: 0.875rem;
-    }
-
-    a.bg-gray-700:hover {
-      background-color: #1e293b !important;
-    }
-
-    /* Profile Dropdown */
-.profile-dropdown {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  background-color: white;
-  border: 1px solid #ddd;
-  border-radius: 0.5rem;
-  display: none;
-  min-width: 150px;
-  z-index: 99;
-}
-
-.profile-dropdown a {
-  display: block;
-  padding: 0.5rem 1rem;
-  text-decoration: none;
-  color: #333;
-}
-
-.profile-dropdown a:hover {
-  background-color: #f8f9fa;
-}
-
-.dark-mode .profile-dropdown a {
-  color: #f1f5f9;
-}
-
-.dark-mode .profile-dropdown a:hover {
-  background-color: #475569;
-}
-.bx:hover {
-  color: var(--accent-color);
-  transform: scale(1.2);
-  transition: all 0.3s ease-in-out;
-  cursor: pointer;
-}
-
-.bx {
-  transition: all 0.3s ease-in-out;
-}
-
-
-/* Bottom Nav Styling */
-.bottom-nav {
-  background: linear-gradient(90deg, #e2e2e2, #c9d6ff); /* Light mode default */
-  color: #1f2937;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-/* Bottom Nav for Dark Mode */
-.dark-mode .bottom-nav {
-  background: linear-gradient(90deg, #313b4d, #1e293b);
-  color: #e2e8f0;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* Optional: Style icons/text on hover */
-.bottom-nav a {
-  transition: all 0.3s ease;
-}
-
-.bottom-nav a:hover {
-  transform: scale(1.05);
-  color: var(--accent-color);
-}
-
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(2px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1050;
-}
-
-.modal-box {
-  background-color: white;
-  padding: 2rem;
-  border-radius: 1rem;
-  width: 90%;
-  max-width: 400px;
-  text-align: center;
-}
-
-.dark-mode .modal-box {
-  background-color: #1e293b;
-  color: #f1f5f9;
-}
-
-.modal-overlay.d-none {
-  display: none;
-}
-
-/* media.css */
-  
-/* Base styles for mobile first (up to 768px) */
-body {
-  font-size: 14px;
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-}
-
-.container {
-  padding: 0.5rem;
-}
-
-/* Make charts and cards full-width */
-.col-md-6,
-.col-md-4,
-.card {
-  width: 100% !important;
-  margin-bottom: 1rem;
-}
-
-/* Fix nav spacing */
-.bottom-nav {
-  position: sticky;
-  bottom: 0;
-  z-index: 1000;
-  background-color: var(--primary-color);
-  display: flex;
-  justify-content: space-around;
-  padding: 0.5rem 0;
-  box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
-}
-
-.bottom-nav i,
-.bottom-nav span {
-  font-size: 0.9rem;
-}
-
-/* Make top bar sticky */
-.top-bar {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  background-color: var(--primary-color);
-  padding: 0.8rem 1rem;
-  color: var(--text-color);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-/* Adjust pie and bar charts to fit */
-canvas {
-  max-width: 100%;
-  height: auto;
-}
-
-/* Media query for tablets (min-width: 768px) */
-@media (min-width: 768px) {
-  
-  .container {
-    padding: 1rem;
-  }
-
-  .col-md-6 {
-    width: 48%;
-  }
-
-  .col-md-4 {
-    width: 30%;
-  }
-
-  .charts-section,
-  .goal-section {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    justify-content: space-between;
-  }
-
-  .card {
-    margin-bottom: 1.5rem;
-  }
-
-  .bottom-nav {
-    padding: 1rem 2rem;
-  }
-}
-/* ✅ For dark mode list item background */
-.dark-mode .list-item, 
-.dark-mode .goal-item, 
-.dark-mode .transaction-item, 
-.dark-mode .card {
-  background-color: #1e293b !important;
-  color: #f1f5f9;
-  border-color: #334155;
-}
-
-
-/* Optional for larger screens like tablets in landscape */
-@media (min-width: 992px) {
-  .top-bar {
-    padding: 1rem 2rem;
-  }
-
-  .bottom-nav span {
-    font-size: 1rem;
-  }
-
-  body {
-    font-size: 16px;
-  }
-}
-
-@media (max-width: 768px) {
-  
-  .greeting {
-    display: none;
-  }
-
-  .top-bar {
-    justify-content: space-between;
-  }
-
-  .logo {
-    width: 120px;
-  }
-
-  .top-icons {
-    display: flex;
-  }
-.top-bar,
-.Logo-Strip {
-  padding: 1rem;
-  height: auto;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.5rem;
-}
-
-.Logo-Strip h6 {
-  font-size: 1.3rem;
-  margin-bottom: 0.25rem;
-}
-
-.Logo-Strip .greeting {
-  font-size: 0.95rem;
-  display: block !important;
-}
-
-}
-
-/* ===== Flash Message Styles ===== */
-.flash-message-container {
-  position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 9999;
-  width: 90%;
-  max-width: 500px;
-  text-align: center;
-}
-
-.flash-message {
-  padding: 12px 20px;
-  border-radius: 6px;
-  margin-bottom: 10px;
-  font-weight: 500;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  animation: fadeOut 5s forwards;
-}
-
-.flash-message.success {
-  background-color: #d4edda;
-  color: #155724;
-  border: 1px solid #c3e6cb;
-}
-
-.flash-message.error {
-  background-color: #f8d7da;
-  color: #721c24;
-  border: 1px solid #f5c6cb;
-}
-
-@keyframes fadeOut {
-  0% { opacity: 1; }
-  80% { opacity: 1; }
-  100% { opacity: 0; display: none; }
-}
-
-  </style>
 </head>
 
 <body id="body" class="min-h-screen ">
@@ -645,6 +177,40 @@ canvas {
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
+
+               const ctx = document.getElementById('goalChart').getContext('2d');
+
+  const chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: <%- JSON.stringify(chartLabels) %>,
+      datasets: [{
+        label: 'Saved Amount (₹)',
+        data: <%- JSON.stringify(chartData) %>,
+        fill: true,
+        backgroundColor: 'rgba(31, 78, 121, 0.2)',
+        borderColor: '#1F4E79',
+        tension: 0.3,
+        pointRadius: 4,
+        pointHoverRadius: 6
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            callback: function (value) {
+              return '₹' + value;
+            }
+          }
+        }
+      }
+    }
+  });
+
+
     // Apply dark mode if saved
 
       const themeToggle = document.getElementById('theme-toggle');
@@ -751,38 +317,6 @@ canvas {
       }
 
     });
-
-           const ctx = document.getElementById('goalChart').getContext('2d');
-
-  const chart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: <%- JSON.stringify(chartLabels) %>,
-      datasets: [{
-        label: 'Saved Amount (₹)',
-        data: <%- JSON.stringify(chartData) %>,
-        fill: true,
-        backgroundColor: 'rgba(31, 78, 121, 0.2)',
-        borderColor: '#1F4E79',
-        tension: 0.3,
-        pointRadius: 4,
-        pointHoverRadius: 6
-      }]
-    },
-    options: {
-      responsive: true,
-      scales: {
-        y: {
-          beginAtZero: true,
-          ticks: {
-            callback: function (value) {
-              return '₹' + value;
-            }
-          }
-        }
-      }
-    }
-  });
 
 
   

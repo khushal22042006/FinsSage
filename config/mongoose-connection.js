@@ -5,7 +5,7 @@ const dbgr = require("debug")("development:mongoose");
 
 const connectDB = async () => {
   try {
-    await mongoose.connect(`${config.get("MONGODB_URI")}/FinSage`);
+    await mongoose.connect(`${process.env.MONGODB_URI}/FinSage`);
     dbgr("MongoDB connected");
   } catch (err) {
     console.error("MongoDB connection error:", err.message);
